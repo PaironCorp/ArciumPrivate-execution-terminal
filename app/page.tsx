@@ -121,7 +121,7 @@ export default function Home() {
             <p className="text-gray-400 text-base max-w-md leading-relaxed font-light">
               Confidential trade execution for Solana. Your strategy remains invisible to MEV bots thanks to <span className="text-white font-bold uppercase tracking-wider text-xs">Arcium MXE technology</span>.
               <span className="block mt-4 text-xs text-purple-400/80 font-bold uppercase tracking-widest">
-                Project for RTG. Ventures | X:@HandOfTech
+                Project for RTG. Ventures | X:@HandOdTech
               </span>
             </p>
           </div>
