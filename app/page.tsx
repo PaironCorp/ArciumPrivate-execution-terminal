@@ -34,20 +34,27 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black text-white font-mono overflow-x-hidden">
       {/* Логотип по центру */}
-      <nav className="border-b border-gray-800 p-6 flex justify-between items-center bg-black/50 backdrop-blur-md sticky top-0 z-50">
-        <div className="flex items-center gap-2 w-1/3">
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-          <span className="text-xs text-gray-500 hidden md:block uppercase tracking-widest">Network: Arcium MXE</span>
-        </div>
-        
-        <div className="flex justify-center w-1/3">
-          <img src="/logo.png" alt="Arcium Logo" className="h-8 invert brightness-200" />
-        </div>
+      <nav className="border-b border-white/5 p-4 flex justify-between items-center bg-black/40 backdrop-blur-xl sticky top-0 z-50 h-20">
+  <div className="w-1/3 flex items-center gap-2">
+    <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]" />
+    <span className="text-[9px] text-gray-500 uppercase tracking-[0.2em] hidden sm:block">MXE Cluster: Active</span>
+  </div>
+  
+  <div className="w-1/3 flex justify-center">
+    <img 
+      src="/logo.png" 
+      alt="Arcium" 
+      className="h-6 w-auto invert brightness-[5] contrast-125" 
+    />
+  </div>
 
-        <div className="w-1/3 flex justify-end">
-  <WalletMultiButton className="!bg-white !text-black !px-6 !py-2 !rounded-full hover:!bg-purple-400 !transition-all !font-bold !text-[10px] !uppercase !tracking-widest !h-auto !leading-none shadow-lg shadow-white/5" />
-</div>
-      </nav>
+  <div className="w-1/3 flex justify-end">
+    {}
+    <div className="wallet-adapter-custom-wrapper">
+      <WalletMultiButton className="!bg-white !text-black !px-4 !py-0 !h-10 !rounded-full hover:!bg-purple-400 !transition-all !font-bold !text-[9px] !uppercase !tracking-widest" />
+    </div>
+  </div>
+</nav>
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 p-6 mt-12 relative z-10">
         <motion.div 
