@@ -7,7 +7,7 @@ export default function Home() {
   const [amount, setAmount] = useState("");
   const [leverage, setLeverage] = useState("1");
   const [isEncrypting, setIsEncrypting] = useState(false);
-  const [status, setStatus] = useState("idle"); // idle, encrypting, success
+  const [status, setStatus] = useState("idle");
 
   const handleTrade = async () => {
     if (!amount) return;
@@ -15,7 +15,6 @@ export default function Home() {
     setIsEncrypting(true);
     setStatus("encrypting");
 
-    // Имитация задержки шифрования Arcium (чтобы было видно "работу")
     setTimeout(() => {
       setStatus("success");
       setIsEncrypting(false);
@@ -25,7 +24,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-black text-white font-mono selection:bg-purple-500/30">
-      {/* HEADER */}
       <nav className="border-b border-gray-800 p-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
@@ -42,8 +40,6 @@ export default function Home() {
       </nav>
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 p-6 mt-10">
-        
-        {/* LEFT COLUMN - INFO */}
         <div className="space-y-8">
           <div>
             <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-500 text-transparent bg-clip-text">
@@ -69,10 +65,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* RIGHT COLUMN - TRADING FORM */}
         <div className="border border-gray-800 rounded-xl p-8 bg-gray-900/30 backdrop-blur relative overflow-hidden">
-          
-          {/* DECORATION BLOB */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl -z-10" />
 
           <div className="space-y-6">
@@ -108,22 +101,22 @@ export default function Home() {
 
             <div className="h-px bg-gray-800 my-4" />
 
-            {/* STATUS LOGS */}
             <div className="bg-black/50 p-4 rounded border border-gray-800 font-mono text-xs h-32 overflow-y-auto">
               <p className="text-gray-500">System Ready...</p>
               {status === "encrypting" && (
-  <div>
-    <p className="text-yellow-500 animate-pulse">> Initializing Arcium MXE environment...</p>
-    <p className="text-yellow-500 animate-pulse">> Encrypting order details (Zero-Knowledge)...</p>
-  </div>
-)}
-             {status === "success" && (
-  <div>
-    <p className="text-green-500">> Order Encrypted Successfully.</p>
-    <p className="text-green-500">> Proof submitted on-chain.</p>
-    <p className="text-gray-400">> Tx Hash: 8xG2...9kL1 [Hidden]</p>
-  </div>
-)}
+                <div>
+                  <p className="text-yellow-500 animate-pulse">{">"} Initializing Arcium MXE environment...</p>
+                  <p className="text-yellow-500 animate-pulse">{">"} Encrypting order details (Zero-Knowledge)...</p>
+                </div>
+              )}
+              {status === "success" && (
+                <div>
+                  <p className="text-green-500">{">"} Order Encrypted Successfully.</p>
+                  <p className="text-green-500">{">"} Proof submitted on-chain.</p>
+                  <p className="text-gray-400">{">"} Tx Hash: 8xG2...9kL1 [Hidden]</p>
+                </div>
+              )}
+            </div>
 
             <button 
               onClick={handleTrade}
