@@ -112,19 +112,18 @@ export default function Home() {
             <div className="bg-black/50 p-4 rounded border border-gray-800 font-mono text-xs h-32 overflow-y-auto">
               <p className="text-gray-500">System Ready...</p>
               {status === "encrypting" && (
-                <>
-                  <p className="text-yellow-500 animate-pulse">> Initializing Arcium MXE environment...</p>
-                  <p className="text-yellow-500 animate-pulse">> Encrypting order details (Zero-Knowledge)...</p>
-                </>
-              )}
-              {status === "success" && (
-                <>
-                  <p className="text-green-500">> Order Encrypted Successfully.</p>
-                  <p className="text-green-500">> Proof submitted on-chain.</p>
-                  <p className="text-gray-400">> Tx Hash: 8xG2...9kL1 [Hidden]</p>
-                </>
-              )}
-            </div>
+  <div>
+    <p className="text-yellow-500 animate-pulse">> Initializing Arcium MXE environment...</p>
+    <p className="text-yellow-500 animate-pulse">> Encrypting order details (Zero-Knowledge)...</p>
+  </div>
+)}
+             {status === "success" && (
+  <div>
+    <p className="text-green-500">> Order Encrypted Successfully.</p>
+    <p className="text-green-500">> Proof submitted on-chain.</p>
+    <p className="text-gray-400">> Tx Hash: 8xG2...9kL1 [Hidden]</p>
+  </div>
+)}
 
             <button 
               onClick={handleTrade}
