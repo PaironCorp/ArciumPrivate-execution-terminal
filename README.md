@@ -1,24 +1,25 @@
-# 🛡️ Private Perps: Arcium-Powered Trading from Ventures 
-# X link: @HandOdTech
+# 🛡️ Private Perps: Confidential Trading Terminal
 
-This project is a private perpetual trading interface built for the Solana ecosystem, integrated with **Arcium** confidential computing.
+> **Built for Solana Radar Hackathon 2026** | Powered by Arcium
 
-## 🚀 Overview
-Standard perpetual exchanges reveal trader intent, which often leads to front-running, copy-trading, and targeted liquidations. **Private Perps** solves this by keeping positions and orders private during computation.
+## 🌌 Overview
+Standard DEXs reveal your trade intent (Size, Direction, Leverage) to the public mempool, making you vulnerable to MEV bots and copy-traders. **Private Perps** solves this by leveraging **Arcium's Confidential Computing Layer**.
 
-## 🛠️ How Arcium is Used
-In this application, Arcium’s confidential computing is the core privacy layer:
-* **Off-chain Privacy:** Positions, orders, and liquidation checks are computed privately.
-* **Selective Disclosure:** Only the final PnL (Profit and Loss) is revealed on-chain, hiding the strategy from adversarial bots.
-* **Encrypted Intent:** Trade details like "Amount" and "Leverage" are processed within Arcium's secure environment before reaching the blockchain.
+Our terminal encrypts your trade intent *before* it hits the chain. The execution logic (Buy/Sell) happens inside secure MXE enclaves, keeping your strategy invisible.
 
-## ✨ Key Features
-* **MEV Resistance:** Protecting users from front-running bots by hiding order flow.
-* **Sleek UI/UX:** A terminal-inspired trading dashboard optimized for clarity and speed.
-* **Real-time Status:** Live logs showing the Arcium encryption process for better user transparency.
+## ⚡ Key Features
+* **Encrypted Intent**: Toggle between `Long/Buy` and `Short/Sell`. The direction is masked from observers until execution.
+* **MXE Visualization**: Real-time graph showing the distribution of encrypted shards across the Arcium Network.
+* **Zero-Leakage UI**: A terminal-inspired interface designed for privacy-conscious traders.
+* **Easter Egg**: A holographic AI guardian ("The Viking") monitors system integrity (Hover bottom-left to reveal).
 
-## 🏗️ Technical Stack
-* **Blockchain:** Solana
-* **Confidential Computing:** Arcium
-* **Frontend:** Next.js (App Router), Tailwind CSS, Framer Motion
-* **Deployment:** Vercel
+## 🛠️ Technical Stack
+* **Frontend**: Next.js 14, Tailwind CSS, Framer Motion
+* **Blockchain**: Solana Wallet Adapter (Phantom/Backpack)
+* **Privacy Layer**: Arcium MXE (Multi-Party Execution) Simulation
+* **Deployment**: Vercel
+
+## 🚀 How to Run
+1.  `npm install`
+2.  `npm run dev`
+3.  Connect your Solana Wallet (Devnet)
