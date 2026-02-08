@@ -10,7 +10,6 @@ export default function Home() {
   const [status, setStatus] = useState("idle");
   const [txCount, setTxCount] = useState(1240);
 
-  // Имитация счетчика транзакций в сети
   useEffect(() => {
     const interval = setInterval(() => {
       setTxCount(prev => prev + Math.floor(Math.random() * 3));
@@ -104,49 +103,4 @@ export default function Home() {
                     className={`p-2 rounded border transition text-xs font-bold ${
                       leverage === x 
                         ? "bg-purple-600 border-purple-600 text-white shadow-lg shadow-purple-500/20" 
-                        : "border-gray-700 text-gray-400 hover:border-gray-500"
-                    }`}
-                  >
-                    {x}x
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-black/80 p-4 rounded border border-gray-800 font-mono text-[10px] h-32 overflow-y-auto shadow-inner">
-              <p className="text-gray-600 font-bold mb-1">// ARCIUM_LOGS_INITIALIZED</p>
-              <p className="text-gray-500">> System Ready...</p>
-              {status === "encrypting" && (
-                <div className="mt-1">
-                  <p className="text-yellow-500 animate-pulse">{">"} Initializing Arcium MXE environment...</p>
-                  <p className="text-yellow-500 animate-pulse">{">"} Encrypting order details (Zero-Knowledge)...</p>
-                </div>
-              )}
-              {status === "success" && (
-                <div className="mt-1">
-                  <p className="text-green-500">{">"} Order Encrypted Successfully.</p>
-                  <p className="text-green-500">{">"} Proof submitted on-chain.</p>
-                  <p className="text-gray-400">{">"} Tx Hash: 8xG2...9kL1 [Hidden]</p>
-                </div>
-              )}
-            </div>
-
-            <button 
-              onClick={handleTrade}
-              disabled={isEncrypting}
-              className="group w-full bg-white text-black font-black py-4 rounded hover:bg-purple-500 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2 uppercase tracking-tighter"
-            >
-              {isEncrypting ? (
-                "Processing MXE..."
-              ) : (
-                <span className="flex items-center gap-2">
-                   Open Private Position <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition" />
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-      </div>
-    </main>
-  );
-}
+                        : "border-gray-700 text-gray-400
