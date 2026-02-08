@@ -68,7 +68,9 @@ export default function Home() {
               Private<br />Execution.
             </h2>
             <p className="text-gray-500 text-sm max-w-sm leading-relaxed font-light">
-              Confidential trade execution for Solana. Powered by <span className="text-white font-bold text-[10px] uppercase tracking-tighter italic">Arcium MXE technology</span>.
+              Confidential trade execution for Solana. Powered by <span className="text-white font-bold text-[10px] uppercase tracking-tighter italic">Arcium MXE technology 
+                Project for RTG. Venutres 
+                X:@HandOfTech</span>.
             </p>
           </div>
 
