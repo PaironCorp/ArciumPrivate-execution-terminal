@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react"; 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"; 
-import { Lock, Cpu, Github, Twitter, ExternalLink, Globe, ChevronRight } from "lucide-react";
+import { Lock, Cpu, Github, Twitter, ExternalLink, Globe, ChevronRight, Activity } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
@@ -14,20 +14,15 @@ export default function Home() {
   const [isEncrypting, setIsEncrypting] = useState(false);
   const [status, setStatus] = useState("idle");
   const [txCount, setTxCount] = useState(1284);
-  
-  // Состояние для частиц
   const [dataParticles, setDataParticles] = useState<any[]>([]);
 
-  // ЭФФЕКТ: Генерируем частицы по кругу со всех сторон
+  // ЭФФЕКТ: Частицы (Стабилизированная версия)
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // Увеличили количество частиц для плотности потока со всех сторон
-      const particles = [...Array(40)].map(() => {
-        // Генерируем случайный угол и большой радиус
+      const particles = [...Array(30)].map(() => {
         const angle = Math.random() * Math.PI * 2;
-        const radius = Math.random() * 400 + 300; // Стартуем далеко от центра (300-700px)
-        
-        // Вычисляем стартовую позицию по кругу
+        // Уменьшили радиус разброса, чтобы не ломать верстку
+        const radius = Math.random() * 300 + 200; 
         const startX = Math.cos(angle) * radius;
         const startY = Math.sin(angle) * radius;
 
@@ -35,16 +30,15 @@ export default function Home() {
           startX,
           startY,
           delay: Math.random() * 5,
-          duration: 5 + Math.random() * 5, // Чуть медленнее, чтобы поток был плавным
+          duration: 4 + Math.random() * 4,
           color: Math.random() > 0.5 ? 'bg-purple-500' : 'bg-blue-400',
-          shadow: Math.random() > 0.5 ? 'shadow-[0_0_10px_#a855f7]' : 'shadow-[0_0_10px_#60a5fa]'
         };
       });
       setDataParticles(particles);
     }
   }, []);
 
-  // Эффект "Глюка" (Glitch)
+  // Эффект "Глюка"
   useEffect(() => {
     if (status === "encrypting") {
       const interval = setInterval(() => {
@@ -90,10 +84,10 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen !bg-black !text-white font-mono overflow-x-hidden relative selection:bg-purple-500/30">
+    <main className="min-h-screen !bg-black !text-white font-mono overflow-x-hidden relative selection:bg-purple-500/30 flex flex-col">
       
-      {/* --- НАВИГАЦИЯ --- */}
-      <nav className="border-b border-white/5 p-4 flex justify-between items-center bg-black/40 backdrop-blur-xl sticky top-0 z-50 h-28">
+      {/* НАВИГАЦИЯ */}
+      <nav className="border-b border-white/5 p-4 flex justify-between items-center bg-black/40 backdrop-blur-xl sticky top-0 z-50 h-24 shrink-0">
         <div className="w-1/3 flex items-center gap-4">
           <div className="flex flex-col">
             <span className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">MXE Cluster Status</span>
@@ -105,20 +99,14 @@ export default function Home() {
           </div>
         </div>
         
-        {/* ЦЕНТР: БОЛЬШОЙ ВИКИНГ + МЕНЮ */}
         <div className="w-1/3 flex justify-center relative group h-full items-center">
            <div className="relative cursor-pointer py-4"> 
               <div className="absolute inset-0 bg-purple-500/40 rounded-full blur-2xl opacity-20 group-hover:opacity-100 transition-opacity duration-500" />
-              <img 
-                src="/avatar.png" 
-                alt="Builder" 
-                className="h-16 w-16 rounded-full border-2 border-white/20 group-hover:border-purple-500 transition-all duration-300 relative z-10 object-cover bg-black shadow-2xl" 
-              />
-              <div className="absolute top-full left-1/2 -translate-x-1/2 pt-6 w-56 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
+              <img src="/avatar.png" alt="Builder" className="h-14 w-14 rounded-full border-2 border-white/20 group-hover:border-purple-500 transition-all duration-300 relative z-10 object-cover bg-black shadow-2xl" />
+              
+              <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-56 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
                 <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-2 shadow-[0_0_50px_rgba(168,85,247,0.2)]">
-                  <div className="text-[9px] uppercase font-bold text-gray-500 px-2 py-2 tracking-widest text-center mb-1 border-b border-white/5">
-                    Connect with Builder
-                  </div>
+                  <div className="text-[9px] uppercase font-bold text-gray-500 px-2 py-2 tracking-widest text-center mb-1 border-b border-white/5">Connect with Builder</div>
                   <a href="https://x.com/HandOdTech" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 hover:bg-white/5 rounded-lg text-xs font-bold text-gray-300 hover:text-white transition-colors group/link mb-1">
                     <Twitter className="w-4 h-4 text-blue-400 group-hover/link:text-white transition-colors" />
                     <span>X / Twitter</span>
@@ -139,47 +127,26 @@ export default function Home() {
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 p-8 mt-8 relative z-10 items-start">
+      {/* ОСНОВНОЙ КОНТЕНТ */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 p-8 mt-8 relative z-10 items-start flex-grow">
         
+        {/* ЛЕВАЯ КОЛОНКА */}
         <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="space-y-12">
           <div className="space-y-6">
-            
             <h2 className="flex flex-col text-7xl font-black tracking-tighter leading-[0.85] uppercase italic border-l-4 border-purple-500 pl-8 shadow-purple-500/20 shadow-sm">
-              <motion.span
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-              >
-                Private
-              </motion.span>
-              <motion.span
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500"
-              >
-                Execution.
-              </motion.span>
+              <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}>Private</motion.span>
+              <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }} className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Execution.</motion.span>
             </h2>
-
             <p className="text-gray-400 text-base max-w-md leading-relaxed font-light">
               Confidential trade execution for Solana. Your strategy remains invisible to MEV bots thanks to <span className="text-white font-bold uppercase tracking-wider text-xs">Arcium MXE technology</span>.
-              <span className="block mt-4 text-xs text-purple-400/80 font-bold uppercase tracking-widest">
-                Project for RTG. Ventures | X:@HandOfTech
-              </span>
+              <span className="block mt-4 text-xs text-purple-400/80 font-bold uppercase tracking-widest">Project for RTG. Ventures | X:@HandOdTech</span>
             </p>
           </div>
 
           <div className="p-8 border border-white/5 rounded-2xl bg-white/[0.01] space-y-6">
             <div className="flex justify-between items-end h-20 gap-2">
               {[40, 70, 45, 90, 65, 80, 30, 50, 85, 40, 60, 75].map((h, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ height: 0 }}
-                  animate={{ height: `${h}%` }}
-                  transition={{ repeat: Infinity, duration: 2, repeatType: "reverse", delay: i * 0.1 }}
-                  className="w-full bg-purple-500/20 rounded-t-sm"
-                />
+                <motion.div key={i} initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ repeat: Infinity, duration: 2, repeatType: "reverse", delay: i * 0.1 }} className="w-full bg-purple-500/20 rounded-t-sm" />
               ))}
             </div>
             <div className="flex justify-between items-center text-[10px] text-gray-500 uppercase tracking-widest font-bold">
@@ -193,18 +160,15 @@ export default function Home() {
               <Lock className="w-5 h-5 text-purple-500 mb-4 group-hover:rotate-12 transition-transform" />
               <h3 className="text-xs font-bold uppercase tracking-widest mb-2">Zero-Leakage</h3>
               <p className="text-[10px] text-gray-500 uppercase italic font-bold">MPC Protocol Active</p>
-              
               <div className="absolute bottom-full left-0 mb-3 w-64 p-4 bg-[#0a0a0a] border border-purple-500/30 rounded-xl text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-[0_0_20px_rgba(168,85,247,0.15)] leading-relaxed">
                 <span className="text-purple-400 font-bold block mb-2 tracking-widest text-[10px]">HOW IT WORKS:</span>
                 Your trade inputs are split into secret shards. No single node ever sees the full order size or direction.
               </div>
             </div>
-
             <div className="p-6 border border-white/5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors group relative cursor-help">
               <Cpu className="w-5 h-5 text-blue-500 mb-4 group-hover:scale-110 transition-transform" />
               <h3 className="text-xs font-bold uppercase tracking-widest mb-2">Compute Nodes</h3>
               <p className="text-[10px] text-gray-500 uppercase font-bold">{txCount.toLocaleString()} Active Nodes</p>
-
                <div className="absolute bottom-full left-0 mb-3 w-64 p-4 bg-[#0a0a0a] border border-blue-500/30 rounded-xl text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-[0_0_20px_rgba(59,130,246,0.15)] leading-relaxed">
                 <span className="text-blue-400 font-bold block mb-2 tracking-widest text-[10px]">ARCIUM NETWORK:</span>
                 Decentralized nodes process your trade blindly using Multi-Party Execution (MXE) simulation.
@@ -213,50 +177,25 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* ПРАВАЯ ЧАСТЬ: ТЕРМИНАЛ */}
+        {/* ПРАВАЯ КОЛОНКА (ТЕРМИНАЛ) */}
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative group mt-8 lg:mt-0">
           <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000" />
           <div className="relative border border-white/10 rounded-3xl p-8 bg-black/80 backdrop-blur-2xl shadow-2xl">
             <div className="space-y-8">
-              
               <div className="flex gap-3 p-1 bg-white/5 rounded-xl border border-white/5">
-                <button 
-                  onClick={() => setSide("buy")}
-                  className={`flex-1 py-4 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all ${side === 'buy' ? 'bg-green-500 text-black shadow-lg shadow-green-500/20' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}
-                >
-                  Buy / Long
-                </button>
-                <button 
-                  onClick={() => setSide("sell")}
-                  className={`flex-1 py-4 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all ${side === 'sell' ? 'bg-red-500 text-black shadow-lg shadow-red-500/20' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}
-                >
-                  Sell / Short
-                </button>
+                <button onClick={() => setSide("buy")} className={`flex-1 py-4 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all ${side === 'buy' ? 'bg-green-500 text-black shadow-lg shadow-green-500/20' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}>Buy / Long</button>
+                <button onClick={() => setSide("sell")} className={`flex-1 py-4 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all ${side === 'sell' ? 'bg-red-500 text-black shadow-lg shadow-red-500/20' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}>Sell / Short</button>
               </div>
 
               <div className="relative pt-2">
-                <input 
-                  type="text" 
-                  value={displayValue} 
-                  onChange={(e) => status === "idle" && setAmount(e.target.value)}
-                  placeholder="0.00 SOL"
-                  className={`w-full bg-transparent text-6xl font-black focus:outline-none placeholder:text-white/5 !text-white tracking-tight ${status === 'encrypting' ? 'text-purple-500 blur-[1px] transition-all duration-75' : ''}`}
-                />
+                <input type="text" value={displayValue} onChange={(e) => status === "idle" && setAmount(e.target.value)} placeholder="0.00 SOL" className={`w-full bg-transparent text-6xl font-black focus:outline-none placeholder:text-white/5 !text-white tracking-tight ${status === 'encrypting' ? 'text-purple-500 blur-[1px] transition-all duration-75' : ''}`} />
                 <div className="absolute top-0 right-0 text-[10px] text-gray-600 font-bold uppercase tracking-widest italic border border-white/10 px-2 py-1 rounded">Order Size</div>
               </div>
 
               <div className="bg-black/50 rounded-xl p-6 border border-white/10 font-mono text-xs h-64 overflow-y-auto space-y-3 shadow-inner custom-scrollbar">
-                <div className="flex items-center gap-2 text-purple-500/50 italic mb-2 font-bold">
-                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full animate-ping" />
-                  {"//"} ESTABLISHING SECURE CHANNEL...
-                </div>
-                
+                <div className="flex items-center gap-2 text-purple-500/50 italic mb-2 font-bold"><span className="w-1.5 h-1.5 bg-purple-500 rounded-full animate-ping" />{"//"} ESTABLISHING SECURE CHANNEL...</div>
                 <AnimatePresence mode="wait">
-                  {status === "idle" && (
-                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-gray-500 italic">
-                      {`[SYSTEM] Ready for confidential ${side.toUpperCase()} execution...`}
-                    </motion.p>
-                  )}
+                  {status === "idle" && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-gray-500 italic">{`[SYSTEM] Ready for confidential ${side.toUpperCase()} execution...`}</motion.p>}
                   {status === "encrypting" && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-2">
                       <p className="text-yellow-500/80 animate-pulse font-bold">{`> SIGNATURE VERIFIED`}</p>
@@ -269,91 +208,76 @@ export default function Home() {
                       <div className="flex flex-col gap-2">
                         <div>
                            <p className="font-bold uppercase tracking-tighter text-sm">{"//"} SHIELDED EXECUTION COMPLETE</p>
-                           <p className="text-[10px] opacity-70 mt-1 uppercase italic font-bold tracking-widest">
-                             MXE_{Math.random().toString(36).substring(7).toUpperCase()}
-                           </p>
+                           <p className="text-[10px] opacity-70 mt-1 uppercase italic font-bold tracking-widest">MXE_{Math.random().toString(36).substring(7).toUpperCase()}</p>
                         </div>
-                        
-                        <a 
-                          href="https://arcium.com" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="mt-2 w-full flex items-center justify-center gap-2 bg-green-500/20 hover:bg-green-500 hover:text-black border border-green-500/50 text-green-400 py-2 rounded text-[10px] font-bold uppercase tracking-widest transition-all"
-                        >
-                          View ZK-Proof Explorer <ExternalLink className="w-3 h-3" />
-                        </a>
+                        <a href="https://arcium.com" target="_blank" rel="noopener noreferrer" className="mt-2 w-full flex items-center justify-center gap-2 bg-green-500/20 hover:bg-green-500 hover:text-black border border-green-500/50 text-green-400 py-2 rounded text-[10px] font-bold uppercase tracking-widest transition-all">View ZK-Proof Explorer <ChevronRight className="w-3 h-3" /></a>
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
 
-              <button 
-                onClick={handleTrade}
-                disabled={isEncrypting}
-                className={`w-full font-black py-5 rounded-xl transition-all active:scale-[0.98] disabled:opacity-30 uppercase text-[11px] tracking-[0.25em] flex items-center justify-center gap-2 shadow-2xl ${side === 'buy' ? 'bg-white text-black hover:bg-green-400' : 'bg-white text-black hover:bg-red-400'}`}
-              >
-                {isEncrypting ? "Encrypting MXE..." : `Execute Private ${side}`}
-                <ChevronRight className="w-4 h-4" />
-              </button>
+              <button onClick={handleTrade} disabled={isEncrypting} className={`w-full font-black py-5 rounded-xl transition-all active:scale-[0.98] disabled:opacity-30 uppercase text-[11px] tracking-[0.25em] flex items-center justify-center gap-2 shadow-2xl ${side === 'buy' ? 'bg-white text-black hover:bg-green-400' : 'bg-white text-black hover:bg-red-400'}`}>{isEncrypting ? "Encrypting MXE..." : `Execute Private ${side}`} <ChevronRight className="w-4 h-4" /></button>
             </div>
           </div>
         </motion.div>
       </div>
 
-      {/* --- ШАР С ПОТОКОМ ДАННЫХ СО ВСЕХ СТОРОН (БЕЗ РАМКИ) --- */}
-      {/* Убрали overflow-hidden, добавили отступы (py-40) */}
-      <div className="relative flex justify-center items-center py-40 mt-20">
-        <div className="absolute w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px]" />
+      {/* --- НОВАЯ ФИЧА: ГЛОБАЛЬНАЯ КАРТА НОД (СТАБИЛИЗИРОВАННАЯ) --- */}
+      {/* Используем overflow-hidden внутри relative контейнера фиксированной высоты */}
+      <div className="relative w-full h-[500px] flex justify-center items-center overflow-hidden border-t border-white/5 bg-black/50 mt-12">
         
-        {/* Вращающийся шар */}
-        <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }} className="relative w-72 h-72 rounded-full border border-white/5 flex justify-center items-center opacity-60 hover:opacity-100 transition-opacity z-20">
-          <Globe className="w-16 h-16 text-white/10 animate-pulse" />
-          {[...Array(8)].map((_, i) => (
-            <motion.div key={i} className="absolute w-1.5 h-1.5 bg-purple-500 rounded-full shadow-[0_0_15px_#a855f7]" animate={{ x: [Math.cos(i) * 140, 0, Math.cos(i) * 140], y: [Math.sin(i) * 140, 0, Math.sin(i) * 140], opacity: [0, 1, 0], scale: [0, 1.5, 0] }} transition={{ duration: 4, repeat: Infinity, delay: i * 0.5, ease: "easeInOut" }} />
+        {/* Фоновое свечение */}
+        <div className="absolute w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[120px]" />
+
+        {/* ЦЕНТРАЛЬНЫЙ ШАР */}
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }} className="relative w-64 h-64 rounded-full border border-white/10 flex justify-center items-center z-20 bg-black/20 backdrop-blur-sm">
+          <Globe className="w-24 h-24 text-purple-500/20 animate-pulse" />
+          {/* Орбиты на самом шаре */}
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="absolute inset-0 rounded-full border border-white/5" style={{ transform: `rotate(${i * 60}deg) scale(${0.8 + i * 0.1})` }} />
           ))}
         </motion.div>
 
-        {/* --- ВИЗУАЛИЗАЦИЯ ПОТОКА ДАННЫХ С МАСКОЙ --- */}
-        {/* Маска (maskImage) делает края прозрачными, убирая рамку */}
-        <div 
-          className="absolute inset-0 flex justify-center items-center pointer-events-none z-10"
-          style={{
-            maskImage: 'radial-gradient(circle at center, black 40%, transparent 80%)',
-            WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 80%)'
-          }}
-        >
+        {/* ЧАСТИЦЫ: ТЕПЕРЬ ОНИ ВНУТРИ overflow-hidden И НЕ ЛОМАЮТ САЙТ */}
+        <div className="absolute inset-0 flex justify-center items-center pointer-events-none z-10">
           {dataParticles.map((particle, i) => (
             <motion.div
               key={i}
-              className={`absolute w-1 h-1 rounded-full ${particle.color} ${particle.shadow}`}
+              className={`absolute w-1 h-1 rounded-full ${particle.color} shadow-[0_0_8px_currentColor]`}
               initial={{ x: particle.startX, y: particle.startY, opacity: 0 }}
-              animate={{
-                x: 0, 
-                y: 0, 
-                opacity: [0, 1, 0], 
-                scale: [0.5, 2, 0] 
-              }}
-              transition={{
-                duration: particle.duration,
-                repeat: Infinity,
-                delay: particle.delay,
-                ease: "easeIn"
-              }}
+              animate={{ x: 0, y: 0, opacity: [0, 1, 0], scale: [0.5, 1.5, 0] }}
+              transition={{ duration: particle.duration, repeat: Infinity, delay: particle.delay, ease: "easeIn" }}
             />
           ))}
         </div>
+
+        {/* --- ФИШКА ЛИДЕРА: СПУТНИКОВЫЕ НОДЫ (NODE MAP) --- */}
+        {/* Статичные элементы вокруг шара, создающие эффект "Центра управления" */}
+        <div className="absolute inset-0 pointer-events-none z-30">
+            {/* NODE 1: US-EAST */}
+            <div className="absolute top-1/4 left-1/4 flex items-center gap-2 animate-pulse opacity-60">
+                <div className="w-2 h-2 bg-green-500 rounded-full shadow-[0_0_10px_#22c55e]" />
+                <div className="text-[8px] font-bold text-green-500 tracking-widest uppercase bg-black/50 px-2 py-1 rounded border border-green-500/20">Node_US-East_01</div>
+            </div>
+             {/* NODE 2: EU-WEST */}
+             <div className="absolute bottom-1/3 right-1/4 flex items-center gap-2 animate-pulse opacity-60 delay-700">
+                <div className="text-[8px] font-bold text-blue-500 tracking-widest uppercase bg-black/50 px-2 py-1 rounded border border-blue-500/20">Node_EU-West_04</div>
+                <div className="w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_10px_#3b82f6]" />
+            </div>
+             {/* NODE 3: ASIA-PACIFIC */}
+             <div className="absolute bottom-10 left-1/3 flex items-center gap-2 animate-pulse opacity-40 delay-1000">
+                <div className="w-1.5 h-1.5 bg-purple-500 rounded-full shadow-[0_0_10px_#a855f7]" />
+                <div className="text-[7px] font-bold text-purple-500 tracking-widest uppercase">Asia_Cluster_Active</div>
+            </div>
+        </div>
       </div>
 
-      <footer className="p-12 border-t border-white/5 text-center bg-black/80 group relative z-20">
-        <p className="text-[10px] text-gray-600 font-bold tracking-[0.3em] uppercase italic">
-          Arcium Confidential Computing Layer // Developed for Solana Hackathon 2026
-        </p>
-        <div className="mt-6 flex justify-center items-center gap-3 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
-          <div className="w-1.5 h-1.5 bg-purple-500 rounded-full shadow-[0_0_10px_#a855f7] animate-pulse" />
-          <span className="text-[9px] text-gray-500 uppercase tracking-[0.4em] font-black">
-            Status: Verified MXE Node Provider (Prototype)
-          </span>
+      <footer className="p-8 border-t border-white/5 text-center bg-black relative z-40">
+        <p className="text-[9px] text-gray-700 font-bold tracking-[0.3em] uppercase italic">Arcium Confidential Computing Layer // Developed for Solana Hackathon 2026</p>
+        <div className="mt-2 flex justify-center items-center gap-2 opacity-30 hover:opacity-100 transition-opacity">
+           <Activity className="w-3 h-3 text-green-500" />
+           <span className="text-[8px] text-green-600 font-bold uppercase tracking-widest">System Operational</span>
         </div>
       </footer>
     </main>
