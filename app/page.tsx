@@ -201,6 +201,35 @@ export default function Home() {
           </span>
         </div>
       </footer>
+      {/* --- АВТОРСКИЙ ВИДЖЕТ (Страж) --- */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1 }}
+        className="fixed bottom-4 left-4 z-50 group hidden xl:block" // Скрываем на мобилках, чтобы не мешал
+      >
+        {/* Сообщение при наведении */}
+        <div className="absolute -top-12 left-0 bg-white text-black px-3 py-1 rounded-lg text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-[0_0_15px_rgba(255,255,255,0.5)] pointer-events-none">
+          System Architect: Viking_Dev
+          <div className="absolute bottom-[-4px] left-6 w-2 h-2 bg-white rotate-45" />
+        </div>
+
+        {/* Сам Викинг */}
+        <motion.div
+          animate={{ y: [0, -10, 0] }} // Левитация
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="relative w-24 h-24 filter grayscale-[50%] contrast-125 group-hover:grayscale-0 transition-all duration-500 cursor-help"
+        >
+          {/* Неоновая аура за спиной */}
+          <div className="absolute inset-0 bg-purple-600 blur-[20px] opacity-20 group-hover:opacity-50 transition-opacity rounded-full" />
+          
+          <img 
+            src="/avatar.png" 
+            alt="Dev Signature" 
+            className="relative z-10 w-full h-full object-contain drop-shadow-[0_0_5px_rgba(168,85,247,0.5)]" 
+          />
+        </motion.div>
+      </motion.div>
     </main>
   );
 }
