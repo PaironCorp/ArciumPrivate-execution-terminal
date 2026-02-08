@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"; 
+import { Shield, Lock, Activity, Wallet, ChevronRight, Globe, Zap, Server } from "lucide-react";
 import { Shield, Lock, Activity, Wallet, ChevronRight, Globe, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -42,11 +44,9 @@ export default function Home() {
           <img src="/logo.png" alt="Arcium Logo" className="h-8 invert brightness-200" />
         </div>
 
-        <div className="flex justify-end w-1/3">
-          <button className="bg-white text-black px-4 py-2 rounded-full hover:bg-purple-400 transition-all font-bold text-xs flex items-center gap-2 shadow-lg shadow-white/5">
-            <Wallet className="w-3 h-3" /> Connect
-          </button>
-        </div>
+        <div className="w-1/3 flex justify-end">
+  <WalletMultiButton className="!bg-white !text-black !px-6 !py-2 !rounded-full hover:!bg-purple-400 !transition-all !font-bold !text-[10px] !uppercase !tracking-widest !h-auto !leading-none shadow-lg shadow-white/5" />
+</div>
       </nav>
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 p-6 mt-12 relative z-10">
