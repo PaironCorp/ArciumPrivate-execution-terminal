@@ -63,8 +63,8 @@ export default function Home() {
   return (
     <main className="min-h-screen !bg-black !text-white font-mono overflow-x-hidden relative selection:bg-purple-500/30">
       
-      {/* --- НАВИГАЦИЯ С ВИКИНГОМ ПО ЦЕНТРУ --- */}
-      <nav className="border-b border-white/5 p-4 flex justify-between items-center bg-black/40 backdrop-blur-xl sticky top-0 z-50 h-24">
+      {/* --- НАВИГАЦИЯ --- */}
+      <nav className="border-b border-white/5 p-4 flex justify-between items-center bg-black/40 backdrop-blur-xl sticky top-0 z-50 h-28">
         <div className="w-1/3 flex items-center gap-4">
           <div className="flex flex-col">
             <span className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">MXE Cluster Status</span>
@@ -76,34 +76,40 @@ export default function Home() {
           </div>
         </div>
         
-        {/* ЦЕНТР: ЛИЧНЫЙ БРЕНД (Dropdown Menu) */}
-        <div className="w-1/3 flex justify-center relative group">
-           <div className="relative cursor-pointer py-2">
-              {/* Светящаяся аура при наведении */}
-              <div className="absolute inset-0 bg-purple-500/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        {/* ЦЕНТР: БОЛЬШОЙ ВИКИНГ + МЕНЮ (ИСПРАВЛЕНО) */}
+        <div className="w-1/3 flex justify-center relative group h-full items-center">
+           <div className="relative cursor-pointer py-4"> {/* Увеличили зону захвата */}
               
-              {/* Аватар Викинга */}
+              {/* Светящаяся аура (теперь больше) */}
+              <div className="absolute inset-0 bg-purple-500/40 rounded-full blur-2xl opacity-20 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Аватар: УВЕЛИЧЕН (h-16 w-16 = 64px) */}
               <img 
                 src="/avatar.png" 
                 alt="Builder" 
-                className="h-12 w-12 rounded-full border-2 border-white/10 group-hover:border-purple-500 transition-all duration-300 relative z-10 object-cover bg-black" 
+                className="h-16 w-16 rounded-full border-2 border-white/20 group-hover:border-purple-500 transition-all duration-300 relative z-10 object-cover bg-black shadow-2xl" 
               />
 
-              {/* Выпадающее меню */}
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-48 bg-[#0a0a0a] border border-white/10 rounded-xl p-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto shadow-2xl z-50">
-                <div className="text-[8px] uppercase font-bold text-gray-500 px-2 py-1 tracking-widest text-center mb-1">
-                  Connect with Builder
+              {/* МЕНЮ: ИСПРАВЛЕН БАГ С ИСЧЕЗНОВЕНИЕМ */}
+              {/* Используем pt-6 вместо mt-4. Это создает невидимый мост для мышки */}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 pt-6 w-56 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
+                
+                {/* Само тело меню */}
+                <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-2 shadow-[0_0_50px_rgba(168,85,247,0.2)]">
+                  <div className="text-[9px] uppercase font-bold text-gray-500 px-2 py-2 tracking-widest text-center mb-1 border-b border-white/5">
+                    Connect with Builder
+                  </div>
+                  
+                  <a href="https://x.com/HandOdTech" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 hover:bg-white/5 rounded-lg text-xs font-bold text-gray-300 hover:text-white transition-colors group/link mb-1">
+                    <Twitter className="w-4 h-4 text-blue-400 group-hover/link:text-white transition-colors" />
+                    <span>X / Twitter</span>
+                  </a>
+                  
+                  <a href="https://github.com/PaironCorp" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 hover:bg-white/5 rounded-lg text-xs font-bold text-gray-300 hover:text-white transition-colors group/link">
+                    <Github className="w-4 h-4 text-purple-400 group-hover/link:text-white transition-colors" />
+                    <span>GitHub Repo</span>
+                  </a>
                 </div>
-                
-                <a href="https://x.com/HandOdTech" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg text-xs font-bold text-gray-300 hover:text-white transition-colors group/link">
-                  <Twitter className="w-4 h-4 text-blue-400 group-hover/link:text-white transition-colors" />
-                  <span>X / Twitter</span>
-                </a>
-                
-                <a href="https://github.com/PaironCorp" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg text-xs font-bold text-gray-300 hover:text-white transition-colors group/link">
-                  <Github className="w-4 h-4 text-purple-400 group-hover/link:text-white transition-colors" />
-                  <span>GitHub Repo</span>
-                </a>
               </div>
            </div>
         </div>
@@ -115,7 +121,7 @@ export default function Home() {
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 p-8 mt-12 relative z-10 items-start">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 p-8 mt-8 relative z-10 items-start">
         
         <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="space-y-12">
           <div className="space-y-6">
@@ -141,7 +147,7 @@ export default function Home() {
             <p className="text-gray-400 text-base max-w-md leading-relaxed font-light">
               Confidential trade execution for Solana. Your strategy remains invisible to MEV bots thanks to <span className="text-white font-bold uppercase tracking-wider text-xs">Arcium MXE technology</span>.
               <span className="block mt-4 text-xs text-purple-400/80 font-bold uppercase tracking-widest">
-                Project for RTG. Ventures | X:@HandOfTech
+                Project for RTG. Ventures | X:@HandOdTech
               </span>
             </p>
           </div>
@@ -240,8 +246,6 @@ export default function Home() {
                       <p className="text-gray-600">{`> Verifying ZK-Proofs on ${txCount} nodes...`}</p>
                     </motion.div>
                   )}
-                  
-                  {/* ФИНАЛЬНЫЙ СТАТУС С ССЫЛКОЙ НА PROOF */}
                   {status === "success" && (
                     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg text-green-500">
                       <div className="flex flex-col gap-2">
@@ -301,18 +305,13 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* АВТОРСКИЙ ВИДЖЕТ ВНИЗУ (Страж) - Ссылка на GitHub */}
+      {/* АВТОРСКИЙ ВИДЖЕТ ВНИЗУ (Оставляем на всякий случай, если вверху не нажмут) */}
       <a 
         href="https://github.com/PaironCorp/arcium-private-perps" 
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 left-6 z-50 group cursor-pointer hidden md:block"
       >
-        <div className="absolute -top-14 left-0 bg-white text-black px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-[0_0_20px_rgba(255,255,255,0.4)] pointer-events-none">
-          System Architect: Viking_Dev
-          <div className="absolute bottom-[-4px] left-6 w-3 h-3 bg-white rotate-45" />
-        </div>
-
         <motion.div
           animate={{ y: [0, -12, 0] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
