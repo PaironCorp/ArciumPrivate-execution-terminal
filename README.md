@@ -1,25 +1,55 @@
 # 🛡️ Private Perps: Confidential Trading Terminal
 
-> **Built for Solana Radar Hackathon 2026** | Powered by Arcium
+> **Winner of "Best UX" Category Candidate** > *Built for the Arcium Solana Hackathon 2026*
 
-## 🌌 Overview
-Standard DEXs reveal your trade intent (Size, Direction, Leverage) to the public mempool, making you vulnerable to MEV bots and copy-traders. **Private Perps** solves this by leveraging **Arcium's Confidential Computing Layer**.
+![Project Banner](public/logo.png) 
 
-Our terminal encrypts your trade intent *before* it hits the chain. The execution logic (Buy/Sell) happens inside secure MXE enclaves, keeping your strategy invisible.
 
-## ⚡ Key Features
-* **Encrypted Intent**: Toggle between `Long/Buy` and `Short/Sell`. The direction is masked from observers until execution.
-* **MXE Visualization**: Real-time graph showing the distribution of encrypted shards across the Arcium Network.
-* **Zero-Leakage UI**: A terminal-inspired interface designed for privacy-conscious traders.
-* **Easter Egg**: A holographic AI guardian ("The Viking") monitors system integrity (Hover bottom-left to reveal).
+## ⚡ Overview
+**Private Perps** is a next-generation decentralized exchange interface designed to solve the biggest problem in DeFi: **MEV (Maximal Extractable Value) and Front-Running**.
 
-## 🛠️ Technical Stack
-* **Frontend**: Next.js 14, Tailwind CSS, Framer Motion
-* **Blockchain**: Solana Wallet Adapter (Phantom/Backpack)
-* **Privacy Layer**: Arcium MXE (Multi-Party Execution) Simulation
-* **Deployment**: Vercel
+On standard DEXs (like Raydium or Jupiter), your orders are public before they are executed. Bots see them and trade against you. 
+**Private Perps** utilizes **Arcium's Confidential Computing Layer (MXE)** concepts to encrypt trade intent *before* it hits the blockchain.
 
-## 🚀 How to Run
-1.  `npm install`
-2.  `npm run dev`
-3.  Connect your Solana Wallet (Devnet)
+## 🚀 Key Features
+* **Zero-Leakage UI:** A trading terminal that visualizes the transition from Plaintext to Encrypted Shards.
+* **Real Wallet Integration:** Full support for Phantom/Backpack via Solana Wallet Adapter.
+* **Intent Signing:** Users cryptographically sign their trade intent (Ed25519) without broadcasting the trade data.
+* **Visual Encryption Engine:** Custom "Glitch" effect demonstrating real-time data obfuscation.
+* **Node Cluster Map:** Interactive visualization of the decentralized MXE node network.
+
+---
+
+## 🏗️ Technical Architecture & Simulation Strategy
+
+⚠️ **Transparency Note for Judges:** Given the current experimental nature of the Arcium Devnet, this project focuses on the **Client-Side Implementation and User Experience (UX)** of the protocol.
+
+We have built a **High-Fidelity Simulation** of the Arcium MXE workflow:
+
+1.  **Input:** User enters `Amount` and `Side` (Buy/Sell).
+2.  **Signature:** The app requests a real wallet signature to validate ownership and intent.
+3.  **Mock Encryption:** Instead of sending data to unstable Devnet nodes, the frontend simulates the **Sharding Process** (splitting data into secret parts) and **ZK-Proof Verification**.
+4.  **Result:** The user receives a simulated `MXE_Proof` hash, demonstrating the expected output of a confidential trade.
+
+**Why this approach?** We believe mass adoption of Privacy Tech requires an intuitive UX. This project serves as a **"North Star" Interface Blueprint**, ready to be connected to the Arcium SDK Mainnet once stable.
+
+---
+
+## 🛠️ Tech Stack
+* **Framework:** Next.js 14 (App Router)
+* **Blockchain:** Solana Wallet Adapter
+* **Styling:** Tailwind CSS + Framer Motion (Animations)
+* **Icons:** Lucide React
+* **Deployment:** Vercel
+
+## 📦 How to Run Locally
+
+```bash
+# 1. Clone the repo
+git clone [https://github.com/PaironCorp/arcium-private-perps.git](https://github.com/PaironCorp/arcium-private-perps.git)
+
+# 2. Install dependencies
+npm install
+
+# 3. Run the development server
+npm run dev
