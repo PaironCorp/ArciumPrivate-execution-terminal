@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from "react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"; 
 import { Shield, Lock, Activity, Wallet, ChevronRight, Globe, Zap, Server } from "lucide-react";
-import { Shield, Lock, Activity, Wallet, ChevronRight, Globe, Zap } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
+
   const [amount, setAmount] = useState("");
   const [leverage, setLeverage] = useState("1");
   const [isEncrypting, setIsEncrypting] = useState(false);
