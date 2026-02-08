@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react"; 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"; 
-// ДОБАВИЛ ChevronRight В ИМПОРТЫ НИЖЕ
 import { Lock, Cpu, Github, Twitter, ExternalLink, Globe, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -19,17 +18,28 @@ export default function Home() {
   // Состояние для частиц
   const [dataParticles, setDataParticles] = useState<any[]>([]);
 
-  // ЭФФЕКТ: Генерируем частицы ТОЛЬКО после загрузки в браузере (чтобы не было ошибки window)
+  // ЭФФЕКТ: Генерируем частицы по кругу со всех сторон
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const particles = [...Array(20)].map(() => ({
-        startX: (Math.random() - 0.5) * window.innerWidth,
-        startY: 300 + Math.random() * 200,
-        delay: Math.random() * 5,
-        duration: 4 + Math.random() * 4,
-        color: Math.random() > 0.5 ? 'bg-purple-500' : 'bg-blue-400',
-        shadow: Math.random() > 0.5 ? 'shadow-[0_0_10px_#a855f7]' : 'shadow-[0_0_10px_#60a5fa]'
-      }));
+      // Увеличили количество частиц для плотности потока со всех сторон
+      const particles = [...Array(40)].map(() => {
+        // Генерируем случайный угол и большой радиус
+        const angle = Math.random() * Math.PI * 2;
+        const radius = Math.random() * 400 + 300; // Стартуем далеко от центра (300-700px)
+        
+        // Вычисляем стартовую позицию по кругу
+        const startX = Math.cos(angle) * radius;
+        const startY = Math.sin(angle) * radius;
+
+        return {
+          startX,
+          startY,
+          delay: Math.random() * 5,
+          duration: 5 + Math.random() * 5, // Чуть медленнее, чтобы поток был плавным
+          color: Math.random() > 0.5 ? 'bg-purple-500' : 'bg-blue-400',
+          shadow: Math.random() > 0.5 ? 'shadow-[0_0_10px_#a855f7]' : 'shadow-[0_0_10px_#60a5fa]'
+        };
+      });
       setDataParticles(particles);
     }
   }, []);
@@ -254,7 +264,6 @@ export default function Home() {
                       <p className="text-gray-600">{`> Verifying ZK-Proofs on ${txCount} nodes...`}</p>
                     </motion.div>
                   )}
-                  
                   {status === "success" && (
                     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg text-green-500">
                       <div className="flex flex-col gap-2">
@@ -292,20 +301,28 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* --- ШАР С ПОТОКОМ ДАННЫХ (БЕЗ ОШИБКИ WINDOW) --- */}
-      <div className="mt-32 relative flex justify-center items-center pb-40 overflow-hidden">
-        <div className="absolute w-96 h-96 bg-purple-600/10 rounded-full blur-[120px]" />
+      {/* --- ШАР С ПОТОКОМ ДАННЫХ СО ВСЕХ СТОРОН (БЕЗ РАМКИ) --- */}
+      {/* Убрали overflow-hidden, добавили отступы (py-40) */}
+      <div className="relative flex justify-center items-center py-40 mt-20">
+        <div className="absolute w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px]" />
         
         {/* Вращающийся шар */}
-        <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }} className="relative w-72 h-72 rounded-full border border-white/5 flex justify-center items-center opacity-60 hover:opacity-100 transition-opacity z-10">
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }} className="relative w-72 h-72 rounded-full border border-white/5 flex justify-center items-center opacity-60 hover:opacity-100 transition-opacity z-20">
           <Globe className="w-16 h-16 text-white/10 animate-pulse" />
           {[...Array(8)].map((_, i) => (
             <motion.div key={i} className="absolute w-1.5 h-1.5 bg-purple-500 rounded-full shadow-[0_0_15px_#a855f7]" animate={{ x: [Math.cos(i) * 140, 0, Math.cos(i) * 140], y: [Math.sin(i) * 140, 0, Math.sin(i) * 140], opacity: [0, 1, 0], scale: [0, 1.5, 0] }} transition={{ duration: 4, repeat: Infinity, delay: i * 0.5, ease: "easeInOut" }} />
           ))}
         </motion.div>
 
-        {/* --- ВИЗУАЛИЗАЦИЯ ПОТОКА ДАННЫХ --- */}
-        <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
+        {/* --- ВИЗУАЛИЗАЦИЯ ПОТОКА ДАННЫХ С МАСКОЙ --- */}
+        {/* Маска (maskImage) делает края прозрачными, убирая рамку */}
+        <div 
+          className="absolute inset-0 flex justify-center items-center pointer-events-none z-10"
+          style={{
+            maskImage: 'radial-gradient(circle at center, black 40%, transparent 80%)',
+            WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 80%)'
+          }}
+        >
           {dataParticles.map((particle, i) => (
             <motion.div
               key={i}
