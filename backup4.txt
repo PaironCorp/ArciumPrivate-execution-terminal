@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
   const [amount, setAmount] = useState("");
-  const [side, setSide] = useState("buy");
+  const [side, setSide] = useState("buy"); // Состояние для Buy/Sell
   const [isEncrypting, setIsEncrypting] = useState(false);
   const [status, setStatus] = useState("idle");
   const [txCount, setTxCount] = useState(1284);
@@ -64,32 +64,13 @@ export default function Home() {
         
         <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="space-y-10">
           <div className="space-y-4">
-            
-            {/* ОБНОВЛЕННЫЙ ЗАГОЛОВОК (Typewriter Effect) */}
-            <div className="h-24"> 
-              <h2 className="text-7xl font-black tracking-tighter leading-[0.9] uppercase italic border-l-4 border-purple-500 pl-6 shadow-purple-500/20 shadow-sm">
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  Private
-                </motion.span>
-                <br />
-                <motion.span
-                  initial={{ width: "0%" }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 1, delay: 0.5, ease: "circOut" }}
-                  className="inline-block overflow-hidden whitespace-nowrap align-bottom"
-                >
-                  Execution.
-                </motion.span>
-              </h2>
-            </div>
-
+            <h2 className="text-7xl font-black tracking-tighter leading-[0.9] uppercase italic border-l-4 border-purple-500 pl-6 shadow-purple-500/20 shadow-sm">
+              Private<br />Execution.
+            </h2>
             <p className="text-gray-500 text-sm max-w-sm leading-relaxed font-light">
-              Confidential trade execution for Solana. Powered by <span className="text-white font-bold text-[10px] uppercase tracking-tighter italic">Arcium MXE technology</span>.
-              <span className="block mt-2 text-[9px] opacity-50">Project for RTG. Ventures | X:@HandOfTech</span>
+              Confidential trade execution for Solana. Powered by <span className="text-white font-bold text-[10px] uppercase tracking-tighter italic">Arcium MXE technology 
+                Project for RTG. Venutres 
+                X:@HandOfTech</span>.
             </p>
           </div>
 
@@ -111,30 +92,16 @@ export default function Home() {
             </div>
           </div>
 
-          {/* ОБНОВЛЕННЫЕ КАРТОЧКИ С ПОДСКАЗКАМИ */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="p-5 border border-white/5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors group relative cursor-help">
+            <div className="p-5 border border-white/5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors group">
               <Lock className="w-4 h-4 text-purple-500 mb-3 group-hover:rotate-12 transition-transform" />
               <h3 className="text-[10px] font-bold uppercase tracking-widest mb-1">Zero-Leakage</h3>
               <p className="text-[9px] text-gray-600 uppercase italic font-bold">MPC Protocol Active</p>
-              
-              {/* Tooltip 1 */}
-              <div className="absolute bottom-full left-0 mb-2 w-48 p-3 bg-black border border-purple-500/30 rounded-xl text-[8px] text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-                <span className="text-purple-400 font-bold block mb-1">HOW IT WORKS:</span>
-                Your trade inputs are split into secret shards. No single node ever sees the full order.
-              </div>
             </div>
-
-            <div className="p-5 border border-white/5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors group relative cursor-help">
+            <div className="p-5 border border-white/5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors group">
               <Cpu className="w-4 h-4 text-blue-500 mb-3 group-hover:scale-110 transition-transform" />
               <h3 className="text-[10px] font-bold uppercase tracking-widest mb-1">Compute Nodes</h3>
               <p className="text-[9px] text-gray-400 uppercase font-bold">{txCount.toLocaleString()} Nodes</p>
-
-               {/* Tooltip 2 */}
-               <div className="absolute bottom-full left-0 mb-2 w-48 p-3 bg-black border border-blue-500/30 rounded-xl text-[8px] text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
-                <span className="text-blue-400 font-bold block mb-1">ARCIUM NETWORK:</span>
-                Decentralized nodes process your trade blindly using Multi-Party Execution (MXE).
-              </div>
             </div>
           </div>
         </motion.div>
@@ -145,6 +112,7 @@ export default function Home() {
           <div className="relative border border-white/10 rounded-2xl p-8 bg-black/60 backdrop-blur-2xl shadow-2xl">
             <div className="space-y-6">
               
+              {/* ПЕРЕКЛЮЧАТЕЛЬ BUY/SELL */}
               <div className="flex gap-2 p-1 bg-white/5 rounded-xl border border-white/5">
                 <button 
                   onClick={() => setSide("buy")}
@@ -211,6 +179,7 @@ export default function Home() {
         </motion.div>
       </div>
 
+      {/* ШАР ВНИЗУ */}
       <div className="mt-24 relative flex justify-center items-center pb-32">
         <div className="absolute w-96 h-96 bg-purple-600/10 rounded-full blur-[100px]" />
         <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }} className="relative w-64 h-64 rounded-full border border-white/5 flex justify-center items-center opacity-40 hover:opacity-100 transition-opacity">
@@ -232,25 +201,28 @@ export default function Home() {
           </span>
         </div>
       </footer>
-
       {/* --- АВТОРСКИЙ ВИДЖЕТ (Страж) --- */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1 }}
-        className="fixed bottom-4 left-4 z-50 group" // УБРАЛ hidden, ТЕПЕРЬ ОН ВИДЕН ВСЕГДА
+        className="fixed bottom-4 left-4 z-50 group hidden xl:block" // Скрываем на мобилках, чтобы не мешал
       >
+        {/* Сообщение при наведении */}
         <div className="absolute -top-12 left-0 bg-white text-black px-3 py-1 rounded-lg text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-[0_0_15px_rgba(255,255,255,0.5)] pointer-events-none">
           System Architect: Viking_Dev
           <div className="absolute bottom-[-4px] left-6 w-2 h-2 bg-white rotate-45" />
         </div>
 
+        {/* Сам Викинг */}
         <motion.div
-          animate={{ y: [0, -10, 0] }}
+          animate={{ y: [0, -10, 0] }} // Левитация
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           className="relative w-24 h-24 filter grayscale-[50%] contrast-125 group-hover:grayscale-0 transition-all duration-500 cursor-help"
         >
+          {/* Неоновая аура за спиной */}
           <div className="absolute inset-0 bg-purple-600 blur-[20px] opacity-20 group-hover:opacity-50 transition-opacity rounded-full" />
+          
           <img 
             src="/avatar.png" 
             alt="Dev Signature" 
