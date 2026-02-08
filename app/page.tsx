@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react"; 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"; 
-import { Shield, Lock, Activity, Wallet, ChevronRight, Globe, Zap, Server, Cpu, Github, Twitter, ExternalLink } from "lucide-react";
+import { Lock, Cpu, Github, Twitter, ExternalLink, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
@@ -14,17 +14,24 @@ export default function Home() {
   const [isEncrypting, setIsEncrypting] = useState(false);
   const [status, setStatus] = useState("idle");
   const [txCount, setTxCount] = useState(1284);
+  
+  // Состояние для частиц
+  const [dataParticles, setDataParticles] = useState<any[]>([]);
 
-  // Генерация случайных параметров для частиц потока данных (чтобы они не пересчитывались при каждом рендере)
-  const dataParticles = useMemo(() => {
-    return [...Array(20)].map(() => ({
-      startX: (Math.random() - 0.5) * window.innerWidth, // Случайная позиция по ширине экрана
-      startY: 300 + Math.random() * 200, // Начинаем ниже экрана
-      delay: Math.random() * 5, // Случайная задержка
-      duration: 4 + Math.random() * 4, // Случайная скорость
-      color: Math.random() > 0.5 ? 'bg-purple-500' : 'bg-blue-400', // Чередование цветов
-      shadow: Math.random() > 0.5 ? 'shadow-[0_0_10px_#a855f7]' : 'shadow-[0_0_10px_#60a5fa]'
-    }));
+  // ЭФФЕКТ: Генерируем частицы ТОЛЬКО после загрузки в браузере
+  useEffect(() => {
+    // Проверяем, что window существует (на всякий случай)
+    if (typeof window !== 'undefined') {
+      const particles = [...Array(20)].map(() => ({
+        startX: (Math.random() - 0.5) * window.innerWidth, // Теперь это безопасно
+        startY: 300 + Math.random() * 200,
+        delay: Math.random() * 5,
+        duration: 4 + Math.random() * 4,
+        color: Math.random() > 0.5 ? 'bg-purple-500' : 'bg-blue-400',
+        shadow: Math.random() > 0.5 ? 'shadow-[0_0_10px_#a855f7]' : 'shadow-[0_0_10px_#60a5fa]'
+      }));
+      setDataParticles(particles);
+    }
   }, []);
 
   // Эффект "Глюка" (Glitch)
@@ -285,7 +292,7 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* --- НОВЫЙ БЛОК: ШАР С ПОТОКОМ ДАННЫХ --- */}
+      {/* --- ШАР С ПОТОКОМ ДАННЫХ (БЕЗ ОШИБКИ WINDOW) --- */}
       <div className="mt-32 relative flex justify-center items-center pb-40 overflow-hidden">
         <div className="absolute w-96 h-96 bg-purple-600/10 rounded-full blur-[120px]" />
         
@@ -297,7 +304,7 @@ export default function Home() {
           ))}
         </motion.div>
 
-        {/* --- ВИЗУАЛИЗАЦИЯ ПОТОКА ДАННЫХ (ЧАСТИЦЫ) --- */}
+        {/* --- ВИЗУАЛИЗАЦИЯ ПОТОКА ДАННЫХ --- */}
         <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
           {dataParticles.map((particle, i) => (
             <motion.div
@@ -305,10 +312,10 @@ export default function Home() {
               className={`absolute w-1 h-1 rounded-full ${particle.color} ${particle.shadow}`}
               initial={{ x: particle.startX, y: particle.startY, opacity: 0 }}
               animate={{
-                x: 0, // Движемся к центру по X
-                y: 0, // Движемся к центру по Y
-                opacity: [0, 1, 0], // Появляемся и исчезаем
-                scale: [0.5, 2, 0] // Увеличиваемся и схлопываемся
+                x: 0, 
+                y: 0, 
+                opacity: [0, 1, 0], 
+                scale: [0.5, 2, 0] 
               }}
               transition={{
                 duration: particle.duration,
@@ -332,8 +339,6 @@ export default function Home() {
           </span>
         </div>
       </footer>
-      
-      {/*  */}
     </main>
   );
 }
