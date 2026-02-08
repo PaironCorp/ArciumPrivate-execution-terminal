@@ -30,7 +30,10 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen !bg-black !text-white font-mono overflow-x-hidden relative selection:bg-purple-500/30">
+    <main 
+      style={{ backgroundColor: 'black', color: 'white', minHeight: '100vh' }}
+      className="min-h-screen font-mono overflow-x-hidden relative selection:bg-purple-500/30"
+    >
       
       {/* 1. Навигация с логотипом по центру */}
       <nav className="border-b border-white/5 p-4 flex justify-between items-center bg-black/40 backdrop-blur-xl sticky top-0 z-50 h-20">
