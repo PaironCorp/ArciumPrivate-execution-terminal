@@ -1,32 +1,31 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useWallet } from "@solana/wallet-adapter-react"; // Добавили хук для кошелька
+import { useWallet } from "@solana/wallet-adapter-react"; 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"; 
-import { Shield, Lock, Activity, Wallet, ChevronRight, Globe, Zap, Server, Cpu } from "lucide-react";
+import { Shield, Lock, Activity, Wallet, ChevronRight, Globe, Zap, Server, Cpu, Github, Twitter, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
-  const { signMessage } = useWallet(); // Хук для подписи сообщений
+  const { signMessage } = useWallet(); 
   const [amount, setAmount] = useState("");
-  const [displayValue, setDisplayValue] = useState(""); // Для эффекта шифрования
+  const [displayValue, setDisplayValue] = useState(""); 
   const [side, setSide] = useState("buy");
   const [isEncrypting, setIsEncrypting] = useState(false);
   const [status, setStatus] = useState("idle");
   const [txCount, setTxCount] = useState(1284);
 
-  // Эффект "Глюка" (Glitch) при шифровании
+  // Эффект "Глюка" (Glitch)
   useEffect(() => {
     if (status === "encrypting") {
       const interval = setInterval(() => {
-        // Генерируем случайную абракадабру
         setDisplayValue(Math.random().toString(36).substring(2, 10).toUpperCase());
       }, 80);
       return () => clearInterval(interval);
     } else if (status === "success") {
-      setDisplayValue("********"); // Данные скрыты
+      setDisplayValue("********"); 
     } else {
-      setDisplayValue(amount); // Показываем то, что ввел юзер
+      setDisplayValue(amount); 
     }
   }, [status, amount]);
 
@@ -40,7 +39,6 @@ export default function Home() {
   const handleTrade = async () => {
     if (!amount) return;
 
-    // 1. Сначала просим кошелек подписать "намерение" (Выглядит очень реально!)
     try {
       if (signMessage) {
         const message = new TextEncoder().encode(
@@ -50,24 +48,23 @@ export default function Home() {
       }
     } catch (error) {
       console.log("User rejected signature");
-      return; // Если юзер отказался, не продолжаем
+      return; 
     }
 
-    // 2. Если подписал — запускаем визуализацию шифрования
     setIsEncrypting(true);
     setStatus("encrypting");
     
     setTimeout(() => {
       setStatus("success");
       setIsEncrypting(false);
-    }, 3500); // Чуть дольше, чтобы насладиться эффектом
+    }, 3500); 
   };
 
   return (
     <main className="min-h-screen !bg-black !text-white font-mono overflow-x-hidden relative selection:bg-purple-500/30">
       
-      {/* Навигация */}
-      <nav className="border-b border-white/5 p-4 flex justify-between items-center bg-black/40 backdrop-blur-xl sticky top-0 z-50 h-20">
+      {/* --- НАВИГАЦИЯ С ВИКИНГОМ ПО ЦЕНТРУ --- */}
+      <nav className="border-b border-white/5 p-4 flex justify-between items-center bg-black/40 backdrop-blur-xl sticky top-0 z-50 h-24">
         <div className="w-1/3 flex items-center gap-4">
           <div className="flex flex-col">
             <span className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">MXE Cluster Status</span>
@@ -79,12 +76,36 @@ export default function Home() {
           </div>
         </div>
         
-        <div className="w-1/3 flex justify-center">
-          <img 
-            src="/logo.png" 
-            alt="Arcium" 
-            className="h-8 w-auto invert brightness-[5] contrast-125" 
-          />
+        {/* ЦЕНТР: ЛИЧНЫЙ БРЕНД (Dropdown Menu) */}
+        <div className="w-1/3 flex justify-center relative group">
+           <div className="relative cursor-pointer py-2">
+              {/* Светящаяся аура при наведении */}
+              <div className="absolute inset-0 bg-purple-500/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Аватар Викинга */}
+              <img 
+                src="/avatar.png" 
+                alt="Builder" 
+                className="h-12 w-12 rounded-full border-2 border-white/10 group-hover:border-purple-500 transition-all duration-300 relative z-10 object-cover bg-black" 
+              />
+
+              {/* Выпадающее меню */}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-48 bg-[#0a0a0a] border border-white/10 rounded-xl p-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto shadow-2xl z-50">
+                <div className="text-[8px] uppercase font-bold text-gray-500 px-2 py-1 tracking-widest text-center mb-1">
+                  Connect with Builder
+                </div>
+                
+                <a href="https://x.com/HandOdTech" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg text-xs font-bold text-gray-300 hover:text-white transition-colors group/link">
+                  <Twitter className="w-4 h-4 text-blue-400 group-hover/link:text-white transition-colors" />
+                  <span>X / Twitter</span>
+                </a>
+                
+                <a href="https://github.com/PaironCorp" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg text-xs font-bold text-gray-300 hover:text-white transition-colors group/link">
+                  <Github className="w-4 h-4 text-purple-400 group-hover/link:text-white transition-colors" />
+                  <span>GitHub Repo</span>
+                </a>
+              </div>
+           </div>
         </div>
 
         <div className="w-1/3 flex justify-end">
@@ -94,12 +115,11 @@ export default function Home() {
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 p-8 mt-16 relative z-10 items-start">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 p-8 mt-12 relative z-10 items-start">
         
         <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="space-y-12">
           <div className="space-y-6">
             
-            {/* ЗАГОЛОВОК */}
             <h2 className="flex flex-col text-7xl font-black tracking-tighter leading-[0.85] uppercase italic border-l-4 border-purple-500 pl-8 shadow-purple-500/20 shadow-sm">
               <motion.span
                 initial={{ opacity: 0, y: 20 }}
@@ -121,7 +141,7 @@ export default function Home() {
             <p className="text-gray-400 text-base max-w-md leading-relaxed font-light">
               Confidential trade execution for Solana. Your strategy remains invisible to MEV bots thanks to <span className="text-white font-bold uppercase tracking-wider text-xs">Arcium MXE technology</span>.
               <span className="block mt-4 text-xs text-purple-400/80 font-bold uppercase tracking-widest">
-                Project for RTG. Ventures | X:@HandOdTech
+                Project for RTG. Ventures | X:@HandOfTech
               </span>
             </p>
           </div>
@@ -144,7 +164,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* КАРТОЧКИ */}
           <div className="grid grid-cols-2 gap-6">
             <div className="p-6 border border-white/5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors group relative cursor-help">
               <Lock className="w-5 h-5 text-purple-500 mb-4 group-hover:rotate-12 transition-transform" />
@@ -192,7 +211,6 @@ export default function Home() {
               </div>
 
               <div className="relative pt-2">
-                {/* ПОЛЕ ВВОДА С ЭФФЕКТОМ ГЛЮКА */}
                 <input 
                   type="text" 
                   value={displayValue} 
@@ -203,7 +221,7 @@ export default function Home() {
                 <div className="absolute top-0 right-0 text-[10px] text-gray-600 font-bold uppercase tracking-widest italic border border-white/10 px-2 py-1 rounded">Order Size</div>
               </div>
 
-              <div className="bg-black/50 rounded-xl p-6 border border-white/10 font-mono text-xs h-56 overflow-y-auto space-y-3 shadow-inner custom-scrollbar">
+              <div className="bg-black/50 rounded-xl p-6 border border-white/10 font-mono text-xs h-64 overflow-y-auto space-y-3 shadow-inner custom-scrollbar">
                 <div className="flex items-center gap-2 text-purple-500/50 italic mb-2 font-bold">
                   <span className="w-1.5 h-1.5 bg-purple-500 rounded-full animate-ping" />
                   {"//"} ESTABLISHING SECURE CHANNEL...
@@ -222,10 +240,27 @@ export default function Home() {
                       <p className="text-gray-600">{`> Verifying ZK-Proofs on ${txCount} nodes...`}</p>
                     </motion.div>
                   )}
+                  
+                  {/* ФИНАЛЬНЫЙ СТАТУС С ССЫЛКОЙ НА PROOF */}
                   {status === "success" && (
                     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg text-green-500">
-                      <p className="font-bold uppercase tracking-tighter text-sm">{"//"} SHIELDED EXECUTION COMPLETE</p>
-                      <p className="text-[10px] opacity-70 mt-2 uppercase italic font-bold tracking-widest">Arcium Proof: MXE_{Math.random().toString(36).substring(7).toUpperCase()}</p>
+                      <div className="flex flex-col gap-2">
+                        <div>
+                           <p className="font-bold uppercase tracking-tighter text-sm">{"//"} SHIELDED EXECUTION COMPLETE</p>
+                           <p className="text-[10px] opacity-70 mt-1 uppercase italic font-bold tracking-widest">
+                             MXE_{Math.random().toString(36).substring(7).toUpperCase()}
+                           </p>
+                        </div>
+                        
+                        <a 
+                          href="https://arcium.com" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="mt-2 w-full flex items-center justify-center gap-2 bg-green-500/20 hover:bg-green-500 hover:text-black border border-green-500/50 text-green-400 py-2 rounded text-[10px] font-bold uppercase tracking-widest transition-all"
+                        >
+                          View ZK-Proof Explorer <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -266,12 +301,12 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* АВТОРСКИЙ ВИДЖЕТ (Страж) */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
-        className="fixed bottom-6 left-6 z-50 group"
+      {/* АВТОРСКИЙ ВИДЖЕТ ВНИЗУ (Страж) - Ссылка на GitHub */}
+      <a 
+        href="https://github.com/PaironCorp/arcium-private-perps" 
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 left-6 z-50 group cursor-pointer hidden md:block"
       >
         <div className="absolute -top-14 left-0 bg-white text-black px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-[0_0_20px_rgba(255,255,255,0.4)] pointer-events-none">
           System Architect: Viking_Dev
@@ -281,7 +316,7 @@ export default function Home() {
         <motion.div
           animate={{ y: [0, -12, 0] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="relative w-28 h-28 filter grayscale-[50%] contrast-125 group-hover:grayscale-0 transition-all duration-500 cursor-help"
+          className="relative w-28 h-28 filter grayscale-[50%] contrast-125 group-hover:grayscale-0 transition-all duration-500"
         >
           <div className="absolute inset-0 bg-purple-600 blur-[30px] opacity-20 group-hover:opacity-60 transition-opacity rounded-full" />
           <img 
@@ -290,7 +325,7 @@ export default function Home() {
             className="relative z-10 w-full h-full object-contain drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]" 
           />
         </motion.div>
-      </motion.div>
+      </a>
     </main>
   );
 }

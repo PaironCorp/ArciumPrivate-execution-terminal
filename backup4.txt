@@ -1,16 +1,34 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useWallet } from "@solana/wallet-adapter-react"; // Добавили хук для кошелька
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"; 
 import { Shield, Lock, Activity, Wallet, ChevronRight, Globe, Zap, Server, Cpu } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
+  const { signMessage } = useWallet(); // Хук для подписи сообщений
   const [amount, setAmount] = useState("");
+  const [displayValue, setDisplayValue] = useState(""); // Для эффекта шифрования
   const [side, setSide] = useState("buy");
   const [isEncrypting, setIsEncrypting] = useState(false);
   const [status, setStatus] = useState("idle");
   const [txCount, setTxCount] = useState(1284);
+
+  // Эффект "Глюка" (Glitch) при шифровании
+  useEffect(() => {
+    if (status === "encrypting") {
+      const interval = setInterval(() => {
+        // Генерируем случайную абракадабру
+        setDisplayValue(Math.random().toString(36).substring(2, 10).toUpperCase());
+      }, 80);
+      return () => clearInterval(interval);
+    } else if (status === "success") {
+      setDisplayValue("********"); // Данные скрыты
+    } else {
+      setDisplayValue(amount); // Показываем то, что ввел юзер
+    }
+  }, [status, amount]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -19,14 +37,30 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleTrade = () => {
+  const handleTrade = async () => {
     if (!amount) return;
+
+    // 1. Сначала просим кошелек подписать "намерение" 
+    try {
+      if (signMessage) {
+        const message = new TextEncoder().encode(
+          `Arcium Encrypted Trade Request:\n\nSide: ${side.toUpperCase()}\nAmount: ${amount} SOL\nTimestamp: ${Date.now()}\n\nNOTE: This signature validates your intent without revealing data to the public mempool.`
+        );
+        await signMessage(message);
+      }
+    } catch (error) {
+      console.log("User rejected signature");
+      return; // Если юзер отказался, не продолжаем
+    }
+
+    // 2. Если подписал — запускаем визуализацию шифрования
     setIsEncrypting(true);
     setStatus("encrypting");
+    
     setTimeout(() => {
       setStatus("success");
       setIsEncrypting(false);
-    }, 3000);
+    }, 3500); // Чуть дольше, чтобы насладиться эффектом
   };
 
   return (
@@ -65,7 +99,7 @@ export default function Home() {
         <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="space-y-12">
           <div className="space-y-6">
             
-            {/* ИСПРАВЛЕННЫЙ ЗАГОЛОВОК: Больше не плывет, слова стоят друг под другом */}
+            {/* ЗАГОЛОВОК */}
             <h2 className="flex flex-col text-7xl font-black tracking-tighter leading-[0.85] uppercase italic border-l-4 border-purple-500 pl-8 shadow-purple-500/20 shadow-sm">
               <motion.span
                 initial={{ opacity: 0, y: 20 }}
@@ -84,7 +118,6 @@ export default function Home() {
               </motion.span>
             </h2>
 
-            {/* УВЕЛИЧЕННЫЙ ТЕКСТ ОПИСАНИЯ */}
             <p className="text-gray-400 text-base max-w-md leading-relaxed font-light">
               Confidential trade execution for Solana. Your strategy remains invisible to MEV bots thanks to <span className="text-white font-bold uppercase tracking-wider text-xs">Arcium MXE technology</span>.
               <span className="block mt-4 text-xs text-purple-400/80 font-bold uppercase tracking-widest">
@@ -111,14 +144,13 @@ export default function Home() {
             </div>
           </div>
 
-          {/* КАРТОЧКИ С ЧИТАБЕЛЬНЫМИ ПОДСКАЗКАМИ */}
+          {/* КАРТОЧКИ */}
           <div className="grid grid-cols-2 gap-6">
             <div className="p-6 border border-white/5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors group relative cursor-help">
               <Lock className="w-5 h-5 text-purple-500 mb-4 group-hover:rotate-12 transition-transform" />
               <h3 className="text-xs font-bold uppercase tracking-widest mb-2">Zero-Leakage</h3>
               <p className="text-[10px] text-gray-500 uppercase italic font-bold">MPC Protocol Active</p>
               
-              {/* Tooltip 1: Увеличен шрифт и ширина */}
               <div className="absolute bottom-full left-0 mb-3 w-64 p-4 bg-[#0a0a0a] border border-purple-500/30 rounded-xl text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-[0_0_20px_rgba(168,85,247,0.15)] leading-relaxed">
                 <span className="text-purple-400 font-bold block mb-2 tracking-widest text-[10px]">HOW IT WORKS:</span>
                 Your trade inputs are split into secret shards. No single node ever sees the full order size or direction.
@@ -130,7 +162,6 @@ export default function Home() {
               <h3 className="text-xs font-bold uppercase tracking-widest mb-2">Compute Nodes</h3>
               <p className="text-[10px] text-gray-500 uppercase font-bold">{txCount.toLocaleString()} Active Nodes</p>
 
-               {/* Tooltip 2: Увеличен шрифт и ширина */}
                <div className="absolute bottom-full left-0 mb-3 w-64 p-4 bg-[#0a0a0a] border border-blue-500/30 rounded-xl text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-[0_0_20px_rgba(59,130,246,0.15)] leading-relaxed">
                 <span className="text-blue-400 font-bold block mb-2 tracking-widest text-[10px]">ARCIUM NETWORK:</span>
                 Decentralized nodes process your trade blindly using Multi-Party Execution (MXE) simulation.
@@ -161,12 +192,13 @@ export default function Home() {
               </div>
 
               <div className="relative pt-2">
+                {/* ПОЛЕ ВВОДА С ЭФФЕКТОМ ГЛЮКА */}
                 <input 
-                  type="number" 
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  type="text" 
+                  value={displayValue} 
+                  onChange={(e) => status === "idle" && setAmount(e.target.value)}
                   placeholder="0.00 SOL"
-                  className="w-full bg-transparent text-6xl font-black focus:outline-none placeholder:text-white/5 !text-white tracking-tight"
+                  className={`w-full bg-transparent text-6xl font-black focus:outline-none placeholder:text-white/5 !text-white tracking-tight ${status === 'encrypting' ? 'text-purple-500 blur-[1px] transition-all duration-75' : ''}`}
                 />
                 <div className="absolute top-0 right-0 text-[10px] text-gray-600 font-bold uppercase tracking-widest italic border border-white/10 px-2 py-1 rounded">Order Size</div>
               </div>
@@ -185,9 +217,9 @@ export default function Home() {
                   )}
                   {status === "encrypting" && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-2">
-                      <p className="text-yellow-500/80 animate-pulse font-bold">{`> ENCRYPTING ${side.toUpperCase()} INTENT`}</p>
-                      <p className="text-yellow-500/80 animate-pulse">{`> FRAGMENTING ${amount} SOL TO MXE NODES`}</p>
-                      <p className="text-gray-600">{`> Verifying ZK-Proofs...`}</p>
+                      <p className="text-yellow-500/80 animate-pulse font-bold">{`> SIGNATURE VERIFIED`}</p>
+                      <p className="text-purple-400 animate-pulse">{`> SHREDDING INPUT DATA...`}</p>
+                      <p className="text-gray-600">{`> Verifying ZK-Proofs on ${txCount} nodes...`}</p>
                     </motion.div>
                   )}
                   {status === "success" && (
@@ -234,7 +266,7 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* --- АВТОРСКИЙ ВИДЖЕТ (Страж) --- */}
+      {/* АВТОРСКИЙ ВИДЖЕТ (Страж) */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
