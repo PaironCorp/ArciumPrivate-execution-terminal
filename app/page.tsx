@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react"; 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"; 
-import { Lock, Cpu, Github, Twitter, ExternalLink, Globe } from "lucide-react";
+// ДОБАВИЛ ChevronRight В ИМПОРТЫ НИЖЕ
+import { Lock, Cpu, Github, Twitter, ExternalLink, Globe, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
@@ -18,12 +19,11 @@ export default function Home() {
   // Состояние для частиц
   const [dataParticles, setDataParticles] = useState<any[]>([]);
 
-  // ЭФФЕКТ: Генерируем частицы ТОЛЬКО после загрузки в браузере
+  // ЭФФЕКТ: Генерируем частицы ТОЛЬКО после загрузки в браузере (чтобы не было ошибки window)
   useEffect(() => {
-    // Проверяем, что window существует (на всякий случай)
     if (typeof window !== 'undefined') {
       const particles = [...Array(20)].map(() => ({
-        startX: (Math.random() - 0.5) * window.innerWidth, // Теперь это безопасно
+        startX: (Math.random() - 0.5) * window.innerWidth,
         startY: 300 + Math.random() * 200,
         delay: Math.random() * 5,
         duration: 4 + Math.random() * 4,
