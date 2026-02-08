@@ -192,11 +192,19 @@ export default function Home() {
         </div>
       </div>
 
-      <footer className="p-10 border-t border-white/5 text-center bg-black/80">
-        <p className="text-[8px] text-gray-800 font-bold tracking-[0.3em] uppercase italic">
-          Arcium Confidential Computing Layer // Developed for Solana Hackathon 2026
-        </p>
-      </footer>
+      <footer className="p-10 border-t border-white/5 text-center bg-black/80 group">
+  <p className="text-[8px] text-gray-800 font-bold tracking-[0.3em] uppercase italic">
+    Arcium Confidential Computing Layer // Developed for Solana Hackathon 2026
+  </p>
+  
+  {/* Добавляем эту плашку ниже */}
+  <div className="mt-4 flex justify-center items-center gap-2 opacity-30 group-hover:opacity-100 transition-opacity duration-500">
+    <div className="w-1 h-1 bg-purple-500 rounded-full shadow-[0_0_8px_#a855f7] animate-pulse" />
+    <span className="text-[7px] text-gray-600 uppercase tracking-[0.4em] font-black">
+      Status: Verified MXE Node Provider (Prototype)
+    </span>
+  </div>
+</footer>
     </main>
   );
 }
